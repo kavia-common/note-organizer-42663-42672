@@ -1,0 +1,10 @@
+<div class="editor" *ngIf="note() as n">
+  <div class="toolbar">
+    <input class="title" [(ngModel)]="n.title" (ngModelChange)="onTitleChange()" placeholder="Title..." />
+    <div class="status">
+      <span *ngIf="saving()">Saving…</span>
+      <span *ngIf="!saving() && savedAt()">Saved</span>
+    </div>
+  </div>
+  <textarea [(ngModel)]="n.content" (ngModelChange)="onContentChange()" placeholder="Start typing your note..."></textarea>
+</div>

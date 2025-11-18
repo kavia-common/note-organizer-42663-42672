@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
+import { LayoutComponent } from './components/layout/layout.component';
 
+// PUBLIC_INTERFACE
 @Component({
   selector: 'app-root',
-  imports: [],
+  standalone: true,
+  imports: [LayoutComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
-  title = 'note_taking_frontend is being generated';
-}
+export class AppComponent {}

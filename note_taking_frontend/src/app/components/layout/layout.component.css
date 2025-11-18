@@ -1,0 +1,129 @@
+:root {
+  --primary: #2563EB;
+  --secondary: #F59E0B;
+  --error: #EF4444;
+  --bg: #f9fafb;
+  --surface: #ffffff;
+  --text: #111827;
+  --shadow: 0 10px 25px rgba(0,0,0,0.05);
+  --radius: 12px;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  height: 100dvh;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.06), rgba(249, 250, 251, 0.9));
+  color: var(--text);
+}
+
+.sidebar {
+  background: var(--surface);
+  border-right: 1px solid rgba(0,0,0,0.06);
+  padding: 16px;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 16px;
+  padding: 16px;
+}
+
+.list-pane {
+  background: var(--surface);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.editor-pane {
+  background: var(--surface);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.empty-state {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  background: var(--surface);
+  border: 1px dashed rgba(0,0,0,0.1);
+  border-radius: var(--radius);
+}
+
+.btn {
+  appearance: none;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: transform .1s ease, box-shadow .2s ease, background .2s ease, color .2s ease;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25);
+}
+.btn-primary:hover { transform: translateY(-1px); }
+
+@media (max-width: 1024px) {
+  .content {
+    grid-template-columns: 1fr;
+  }
+  .list-pane {
+    height: 45dvh;
+  }
+  .editor-pane {
+    height: 50dvh;
+  }
+}
+
+@media (max-width: 720px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    display: none; /* simple mobile-first approach; could be a drawer */
+  }
+}
+```
+
+Explanation: Sidebar component with search, quick actions, folders/tags simple inputs
+````write file="note-organizer-42663-42672/note_taking_frontend/src/app/components/sidebar/sidebar.component.ts"
+import { Component, EventEmitter, Output, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+@Component({
+  selector: 'app-sidebar',
+  standalone: true,
+  imports: [FormsModule],
+  templateUrl: './sidebar.component.html',
+  styleUrl: './sidebar.component.css',
+})
+export class SidebarComponent {
+  @Output() create = new EventEmitter<void>();
+  @Output() search = new EventEmitter<string>();
+  @Output() filterChange = new EventEmitter<{ folderId?: string | null; tagId?: string | null }>();
+
+  q = signal('');
+  selectedFolder = signal<string | null>(null);
+  selectedTag = signal<string | null>(null);
+
+  onSearchChange() {
+    this.search.emit(this.q());
+  }
+  setFolder(id: string | null) {
+    this.selectedFolder.set(id);
+    this.filterChange.emit({ folderId: id, tagId: this.selectedTag() ?? undefined });
+  }
+  setTag(id: string | null) {
+    this.selectedTag.set(id);
+    this.filterChange.emit({ folderId: this.selectedFolder() ?? undefined, tagId: id ?? undefined });
+  }
+}

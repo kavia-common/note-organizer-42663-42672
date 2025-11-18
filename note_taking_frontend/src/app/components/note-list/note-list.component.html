@@ -1,0 +1,15 @@
+<div class="list">
+  <div
+    class="item"
+    *ngFor="let n of notes"
+    [class.active]="n.id===activeNoteId"
+    (click)="select.emit(n.id)">
+    <div class="title">{{ n.title || 'Untitled' }}</div>
+    <div class="meta">
+      <span>{{ n.updatedAt | date:'short' }}</span>
+      <button class="delete" (click)="$event.stopPropagation(); delete.emit(n.id)">Delete</button>
+    </div>
+    <div class="preview">{{ preview(n.content) }}</div>
+  </div>
+  <div class="empty" *ngIf="!notes?.length">No notes.</div>
+</div>

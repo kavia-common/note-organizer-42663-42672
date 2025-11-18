@@ -1,0 +1,38 @@
+<div class="sidebar-wrap">
+  <div class="brand">
+    <div class="logo">✦</div>
+    <div>
+      <h1>Notes</h1>
+      <p>Ocean Professional</p>
+    </div>
+  </div>
+
+  <div class="search">
+    <input
+      [(ngModel)]="qValue"
+      (ngModelChange)="onSearchChange()"
+      type="text"
+      placeholder="Search notes..." />
+  </div>
+
+  <button class="btn btn-primary" (click)="create.emit()">New Note</button>
+
+  <div class="section">
+    <h3>Folders</h3>
+    <div class="pills">
+      <button class="pill" [class.active]="selectedFolder()===null" (click)="setFolder(null)">All</button>
+      <!-- preset basic for now -->
+      <button class="pill" [class.active]="selectedFolder()==='inbox'" (click)="setFolder('inbox')">Inbox</button>
+      <button class="pill" [class.active]="selectedFolder()==='ideas'" (click)="setFolder('ideas')">Ideas</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Tags</h3>
+    <div class="pills">
+      <button class="pill" [class.active]="selectedTag()===null" (click)="setTag(null)">All</button>
+      <button class="pill" [class.active]="selectedTag()==='work'" (click)="setTag('work')">Work</button>
+      <button class="pill" [class.active]="selectedTag()==='personal'" (click)="setTag('personal')">Personal</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,32 @@
+<div class="app-shell">
+  <aside class="sidebar">
+    <app-sidebar
+      (create)="onCreateNote()"
+      (search)="onSearch($event)"
+      (filterChange)="onSidebarFilterChange($event)">
+    </app-sidebar>
+  </aside>
+  <main class="content">
+    <section class="list-pane">
+      <app-note-list
+        [notes]="filtered()"
+        [activeNoteId]="activeNoteId()"
+        (select)="onSelectNote($event)"
+        (delete)="onDeleteNote($event)">
+      </app-note-list>
+    </section>
+    <section class="editor-pane" *ngIf="activeNoteId(); else empty">
+      <app-note-editor
+        [noteId]="activeNoteId()!"
+        (save)="onSaveNote($event)">
+      </app-note-editor>
+    </section>
+    <ng-template #empty>
+      <div class="empty-state">
+        <h2>Welcome</h2>
+        <p>Create a note to get started.</p>
+        <button class="btn btn-primary" (click)="onCreateNote()">New Note</button>
+      </div>
+    </ng-template>
+  </main>
+</div>
